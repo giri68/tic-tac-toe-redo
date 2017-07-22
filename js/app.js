@@ -26,18 +26,22 @@ function addingId(){
     $(this).text("");
   });
 }
+
 function reset(){
-  numberOfClick = 0;
-  marker = "X";
-  gameRunning = true;
-  $("#textForWinner").text("");
+	numberOfClick = 0;
+	marker = "X";
+	gameRunning = true;
+	$("#textForWinner").text("It's " + marker + "'s turn.");
+  createArrayOfBoard();
+  addingId();
+
 }
 
 
 $(document).ready(function() {
   // all code to manipulate the DOM
   // goes inside this function
-  $("#textForWinner").text("It's" +marker + "turn.");
+  $("#textForWinner").text("It's " + marker + "'s turn.");
   function checkResult(){
   var arrayToWinByX = [];
   for ( var i = 0; i < 3; i++){
@@ -77,7 +81,7 @@ $(document).ready(function() {
     return false;
   }
   arrayToTestEquality = [];
-		for (var i = 0, var j = 2; i < 3, j >= 0; i++, j--){
+		for (var i = 0,  j = 2; i < 3, j >= 0; i++, j--){
 		 	arrayToTestEquality.push(arrayOfBoard[i][j]);
 	 	}
 	 	if(isArrayEqual(arrayToTestEquality, arrayToWinByX) || isArrayEqual(arrayToTestEquality,arrayToWinByO)){
@@ -121,12 +125,14 @@ $(document).on("click", function(event){
   if (gameRunning){
     var clickedPlace = $(event.target);
     var clickedPlaceId = clickedPlace.attr("id");
+
     if ( clickedPlaceId && clickedPlace.text()=== ""){
     var placeValue = clickedPlaceId.split("-");
     var x = placeValue[0];
     var y = placeValue[1];
     arrayOfBoard[x][y] = marker;
     $("#" + clickedPlaceId).text(marker);
+    console.log($("#" + clickedPlaceId));
     console.log("The turn is: " +  marker);
     gameRunning = checkResult();
     if (gameRunning){
@@ -136,9 +142,15 @@ $(document).on("click", function(event){
       } else {
         marker = "O";
       }
-      $("#textForWinner").text(marker + "turn!!");
+      $("#textForWinner").text("It's " + marker + "'s turn.");
     }
     }
   }
 });
+
+$("#reset").on("click", function(event){
+  event.preventDefault();
+  reset();
+  })
+
 });
